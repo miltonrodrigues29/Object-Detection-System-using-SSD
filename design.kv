@@ -1,0 +1,149 @@
+<LoginScreen>:
+    GridLayout:
+        cols:1
+        GridLayout:
+            cols:1
+            padding: 15,15
+            spacing: 20,20
+            Label:
+                text: "User Login"
+                font_size: "20sp"
+            TextInput:
+                id : uname
+                
+                hint_text:"Username"
+            TextInput:
+                password: True
+                id : pword
+                hint_text:"Password"
+            RelativeLayout:
+                Button:
+                    text:"Login"
+                    on_press: root.login(root.ids.uname.text, root.ids.pword.text)
+                    size_hint: 0.3,0.5
+                    pos_hint:{'cente_x': 0.5, 'center_y':0.6}
+            Label:
+                id: login_wrong
+                text: ""
+                
+        GridLayout:
+            cols:2
+            size_hint: 0.2,0.2
+            padding:10,10
+            spacing:10,0
+            Button:
+                text:"Forgot Password"
+                background_color: 1,1,1,0
+                opacity: 1 if self.state == 'normal' else 0.5
+                color: 0.1,0.7,1,1
+            Button:
+                text:"Sign Up"
+                on_press: root.sign_up()
+                background_color: 1,1,1,0
+                opacity: 1 if self.state == 'normal' else 0.5
+                color: 0.1,0.7,1,1
+<SignUpScreen>:
+    GridLayout:
+        cols: 1
+        padding: 20,20
+        spacing: 20,20
+        Label:
+            text: "Sign up for a space journey!"
+        TextInput:
+            id:username
+            hint_text: "Username"
+        TextInput:
+            id:password
+            hint_text: "Password"
+
+        RelativeLayout:
+            Button:
+                text:"Submit"   
+                on_press: root.add_user(root.ids.username.text, root.ids.password.text)
+                opacity: 1 if self.state == 'normal' else 0.5
+                size_hint: 0.3,0.5
+                pos_hint:{'cente_x': 0.5, 'center_y':0.6}
+<SignUpSceenSuccess>:
+    GridLayout:
+        cols: 1
+        Label:
+            text : "Sign Up Successful"
+        Button:
+            text : "Login Page"
+            on_press:root.go_to_login()
+<LoginScreenSuccess>:
+    GridLayout:
+        cols:1
+        padding: 30,30
+        spacing: 30,30
+        RelativeLayout:
+            ImagesButton:
+                on_press: root.log_out()
+                source:"logout_hover.png" if self.hovered else "logout_nothover.png"
+                size_hint: 0.35, 0.35
+                pos_hint: {'center_x': 0.93,'center_y':0.8}
+        Label:
+            text:"Choose Video File to Detect Objects!"
+        # TextInput:
+        #     id: feeling
+        #     hint_text:"Things to try: happy,sad,unloved.."
+        Button:
+            text: "choose video"
+            # on_press: root.get_quote(root.ids.feeling.text)
+            on_press:   root.got_to_file_chooser()
+        ScrollView:
+            Label:
+                id:quote
+                text:""
+                text_size: self.width, None
+                size_hint_y: None
+                height: self.texture_size[1]
+<MyWidget>:
+    GridLayout:
+        
+        cols:1
+        adding: 20,20
+        spacing: 20,20
+        id:my_widget
+        FileChooserIconView:
+            id: filechooser
+        RelativeLayout:
+            Button:
+                text:"Start"
+                backgorund_color:0, 1, 0, 1
+                size_hint: 0.35, 0.35
+                pos_hint: {'center_x': 0.5,'center_y':0.5}
+                background_color: (1.0, 0.0, 0.0, 1.0)
+                on_press: root.start(filechooser.selection)
+        Label:
+            id:wait
+            text: "This May Take a while... PLEASE WAIT"
+<MyVideoApp>:
+    on_enter: videostream.state = 'play'
+    FloatLayout:
+        size: root.size 
+        pos: root.pos
+        VideoPlayer:
+            id:videostream
+            source: "output2.mp4"
+            fullscreen: True
+            state: "play"
+            options: {'eos': 'loop'}
+            
+        
+    
+    
+<RootWidget>:
+    LoginScreen: 
+        name:"login_screen"
+    SignUpScreen:
+        name:"sign_up_screen"
+    SignUpSceenSuccess:
+        name:"sign_up_screen_success"
+    LoginScreenSuccess:
+        name:"login_screen_success"
+    MyWidget:
+        name:"choose_file"
+    MyVideoApp:
+        name: "videoapp"
+
